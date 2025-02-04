@@ -96,14 +96,14 @@
 	
 	    <repository>
 	      <id>nexus</id>
-	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://13.212.71.229:9980/mithuntechnologies/repository/canarabank-snapshot/</url>
+	      <name>Nihal Technologies Releases Nexus Repository</name>
+	      <url>http://3.94.89.49:8081/repository/TCIN_Release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://13.212.71.229:9980/mithuntechnologies/repository/canarabank-release/</url>
+	      <name>Nihal Technologies Snapshot Nexus Repository </name>
+	      <url>http://3.94.89.49:8081/repository/TCIN_Snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
