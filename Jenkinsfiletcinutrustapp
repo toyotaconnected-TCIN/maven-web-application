@@ -31,5 +31,27 @@ pipeline{
                 }
             }
         }
+        stage('Upload artifact into Nexus Repo'){
+            steps{
+                script{
+                    nexusArtifactUploader 
+                    artifacts: [
+                        [
+                            artifactId: 'maven-web-application', 
+                            classifier: '', 
+                            file: 'target/maven-web-application.war', 
+                            type: 'war'
+                            ]
+                     ], 
+                    credentialsId: 'Nexus_credentials',
+                    groupId: 'com.mt', 
+                    nexusUrl: '3.92.26.147:8081',
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'TCIN-Utrust-snapshot/', 
+                    version: '0.0.1-SNAPSHOT'
+                }
+            }
+        }
     }
 }
