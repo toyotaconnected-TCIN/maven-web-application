@@ -1,0 +1,10 @@
+pipeline{
+    agentany
+    stages{
+        stage('GitCheckout'){
+            steps{
+                git branch: 'development', credentialsId: 'GitHub_Credential', url: 'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
+            }
+        }
+    }
+}
