@@ -22,11 +22,12 @@ pipeline{
                     
                 }
             }
-            stage('Quality gate status'){
-                steps{
-                    script{
+
+        }
+        stage('Quality gate status'){
+            steps{
+                script{
                         waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube_Token'
-                    }
                 }
             }
         }
