@@ -36,6 +36,8 @@ pipeline{
                 script{
                     def readPomVersion = readMavenPom file: 'pom.xml'
 
+                    def nexusRepo = readPomVersion.version.endsWith("SNAPSHOT") ? "TCIN-Utrust-snapshot" : "TCIN-Utrust-release"
+
                     nexusArtifactUploader artifacts:
                     [
                         [
@@ -50,11 +52,11 @@ pipeline{
                     nexusUrl: '3.92.26.147:8081',
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
-                    repository: 'TCIN-Utrust-snapshot', 
+                    repository: "${nexusRepo}", 
                     version: "${readPomVersion.version}"
                 }
             }
         }
-        
+
     }
 }
