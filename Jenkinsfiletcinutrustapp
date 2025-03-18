@@ -34,8 +34,8 @@ pipeline{
         stage('Upload artifact into Nexus Repo'){
             steps{
                 script{
-                    nexusArtifactUploader 
-                    artifacts: [
+                    nexusArtifactUploader artifacts:
+                    [
                         [
                             artifactId: 'maven-web-application', 
                             classifier: '', 
