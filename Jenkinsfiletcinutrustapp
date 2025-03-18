@@ -34,6 +34,8 @@ pipeline{
         stage('Upload artifact into Nexus Repo'){
             steps{
                 script{
+                    def readPomVersion = readMavenPom file: 'pom.xml'
+
                     nexusArtifactUploader artifacts:
                     [
                         [
@@ -49,9 +51,10 @@ pipeline{
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
                     repository: 'TCIN-Utrust-snapshot', 
-                    version: '0.0.1-SNAPSHOT'
+                    version: "${readPomVersion.version}"
                 }
             }
         }
+        
     }
 }
