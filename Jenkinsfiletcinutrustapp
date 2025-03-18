@@ -6,5 +6,12 @@ pipeline{
                 git branch: 'development', credentialsId: 'GitHub_Credential', url: 'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
             }
         }
+        stage('mavenBuild'){
+            steps{
+                script{
+                    sh 'mvn clean package'
+                }
+            }
+        }
     }
 }
