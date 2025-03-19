@@ -61,8 +61,8 @@ pipeline{
             steps{
                 script{
                     sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ec2-54-196-123-233.compute-1.amazonaws.com:8085/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ec2-54-196-123-233.compute-1.amazonaws.com:8085/$JOB_NAME:latest'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID tcindockerhub2025/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID tcindockerhub2025/$JOB_NAME:latest'
                 }
             }
         }
