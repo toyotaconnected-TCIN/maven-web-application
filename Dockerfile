@@ -1,10 +1,2 @@
-FROM maven as build
-WORKDIR /app
-COPY . .
-RUN mvn install
-
-FROM OpenJDK:17.0
-WORKDIR /app
-COPY --from=build /app/target/maven-web-app.war /app/
-EXPOSE 8080
-CMD ["java","-jar","maven-web-app.war"]
+FROM tomcat:9.0-jdk17
+COPY target/maven-web-application.*war /usr/local/tomcat/webapps/maven-web-application.war
