@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('Git checkout')
         steps{
-            git 'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
+            git branch:'master',url:'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
         }
     }
 }
