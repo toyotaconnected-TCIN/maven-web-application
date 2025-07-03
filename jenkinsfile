@@ -1,9 +1,14 @@
 pipeline{
-    agent TKMUtrustApp
+    "agent {TKMUtrustApp}"
+
     stages{
-        stage('Git checkout')
-        steps{
+
+        stage('Git Checkout'){
+            steps{
             git branch:'master',url:'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
+            }
+
         }
+      
     }
 }
