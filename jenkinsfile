@@ -1,5 +1,5 @@
 pipeline{
-    "agent {TKMUtrustApp}"
+   agent { label 'TKMUtrustApp' }
 
     stages{
 
