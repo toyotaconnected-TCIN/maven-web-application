@@ -1,5 +1,5 @@
 pipeline{
-    agent { label 'UCTDMS' }
+    agent { label 'TKMUtrustApp' }
 
     stages{
         stage('Git checkout'){
