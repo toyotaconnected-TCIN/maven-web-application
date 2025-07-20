@@ -69,3 +69,125 @@ pipeline{
 
     }
 }
+
+
+
+###Jenkins-cd file####
+
+pipeline{
+   agent { label 'TKMUtrustApp' }
+
+   # awscli install in jenkins server then only our jenkins server will intract to the eks cluster
+   perameters{
+      
+      choice(name: 'action', choices: 'create\ndestroy\n(newline)destroyekscluster', description: 'create/update/destroyekscluster')
+      string(name: 'cluster', defaultvalue: 'utrustapp-cluster', description: 'EKS cluster name')
+      string(name: 'region', defaultvalue: 'ap-south-1', description: 'EKS cluster region')
+   }
+
+   environments{
+
+    ACCESS_KEY = credentials('aws_access_key_id')
+    SECRET_KEY = credentials('aws_secret_access_key')
+    
+   }
+
+    stages{
+
+        stage('Git Checkout'){
+            steps{
+            git branch:'master',url:'https://github.com/toyotaconnected-TCIN/maven-web-application.git'
+            }
+
+        }
+
+        stage('EKS Coonect'){
+            steps{
+                script{
+                    sh"""
+                    aws configure set aws_access_key_id "$ACCESS_KEY"
+                    aws configure set aws_secret_access_key "$SECRET_KEY"
+                    aws configure set region ""
+                    aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+                    """;
+                }
+            }
+        }
+        stage('EKS Deployment'){
+            when {  expression { params.action == 'create'}} # then only set of block triggers
+            steps{
+                scripts{
+                   #under script we have to write set of commands
+                   def apply = false #variable
+                   try{
+                    #user wants conform this block deploy the application in this cluster 
+                    input message: 'please conform the apply to initiate the deployment' ok: 'Ready to apply the config'
+                    apply = true
+                   }
+                   catch(err){
+                    # if user is not ready to apply using this block
+                    apply = false
+                    #our build as unstable not a failure
+                    CurrentBuild.result= 'UNSTABLE' 
+
+                   }
+                   # IF apply connct to the particular eks cluster
+                   if(apply){
+
+                    sh"""
+                       kubectl apply -f .#(deployed deplyoment.yml file and sevice.yml file) #multy line shell script
+                    """;
+                   }
+                }
+            }
+            stage('Delete deployment'){
+                when {expression {perams.action == 'destroy'}}
+                steps{
+                    script{
+                        def destroy = false
+
+                        try{
+                           input message: 'please confirm the destroy to delete the deployment', ok: 'Ready to destroy the config'
+                           destroy = true
+                        }
+                        catch(err){
+                            destroy = false
+                            CurrentBuild.result= 'UNSTABLE'
+                        }
+                        if(destroy){
+                            sh"""
+                            kubectl delete -f .
+                            """;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+    }//stages closing
+
+        post{
+            success{
+               emailext to:'emailid'
+                        subject: 'Pipeline Build is over Build status is'
+                        body:
+                        replyTo:
+            }
+            failure{
+                 emailext to:'emailid'
+                        subject: 'Pipeline Build is over Build status is'
+                        body:
+                        replyTo:
+
+            }
+        }
+
+      
+}//pipeline closing
+
+
+
+
+
